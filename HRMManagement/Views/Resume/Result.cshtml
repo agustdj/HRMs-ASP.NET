@@ -1,0 +1,53 @@
+﻿@model HRMManagement.Models.Resume
+@{
+    ViewData["Title"] = "KNN AI";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+@{
+    string classificationResult = ViewBag.ClassificationResult;
+    string predictedCategory = "Không xác định";
+
+    if (classificationResult != null)
+    {
+        // Parse JSON string to extract predicted category
+        var jsonResult = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(classificationResult);
+        predictedCategory = jsonResult["Predicted Category"];
+    }
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1>Kết quả phân loại CV</h1>
+            <div class="card">
+                <div class="card-body">
+                    @if (classificationResult != null)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            <strong>Kết quả:</strong> @predictedCategory
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            Không có kết quả nào để hiển thị.<br>
+                            Thử lại với một CV khác?
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="mt-3">
+                <a asp-action="Index" class="btn btn-primary">Quay lại</a>
+            </div>
+            <p class="mt-4">
+                Việc phân loại CV bằng công cụ này có thể giúp bạn:
+                <ul>
+                    <li>Hiểu rõ hơn về các yếu tố quan trọng trong CV của bạn.</li>
+                    <li>Đo lường độ phù hợp của CV với các vị trí công việc cụ thể.</li>
+                    <li>Nâng cao cơ hội được lựa chọn cho vị trí công việc mục tiêu.</li>
+                </ul>
+            </p>
+        </div>
+    </div>
+</div>
